@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Jiglu Valley | Nature Resort near Kunti Betta</title>
+  <meta name="description" content="Jiglu Valley – Nature resort and camping near Kunti Betta, Pandavapura, Mandya. Best weekend getaway from Bangalore and Mysore. Book now!"/>
+  <meta name="keywords" content="Jiglu Valley, resort near Mysore, resort near Kunti Betta, camping near Mysore, Pandavapura resort, weekend getaway from Bangalore, nature resort Karnataka"/>
+  <meta name="author" content="Jiglu Valley"/>
+  <meta property="og:title" content="Jiglu Valley | Nature Resort near Kunti Betta"/>
+  <meta property="og:description" content="Peaceful nature retreat near Pandavapura offering adventure, beautiful views and relaxing stays."/>
+  <meta property="og:type" content="website"/>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&family=Cinzel:wght@600;700&display=swap" rel="stylesheet"/>
+  <!-- GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            forest: { 900:'#1a2e1a', 800:'#1f3a1f', 700:'#2d5016', 600:'#3a6b1e', 500:'#4a8526', 400:'#5fa832' },
+            sage:   { 100:'#f0f4ec', 200:'#ddebd2', 300:'#b8d4a0' },
+            beige:  { 100:'#fdf8f0', 200:'#f5ead6', 300:'#e8d5b0' },
+            gold:   { 400:'#d4a843', 500:'#c49a2e' },
+          },
+          fontFamily: { 
+            serif:['Playfair Display','serif'], 
+            sans:['Inter','sans-serif'],
+            brand:['Cinzel', 'serif']
+          },
+        }
+      }
+    }
+  </script>
+
+  <style>
+    html { scroll-behavior: smooth; }
+    body { font-family:'Inter',sans-serif; background:#fdf8f0; color:#1a2e1a; }
+    .font-serif { font-family:'Playfair Display',serif; }
+    .font-brand { font-family:'Cinzel', serif; letter-spacing: 0.1em; }
+
+    /* Navbar */
+    #navbar { transition: background 0.4s, box-shadow 0.4s; }
+    #navbar.scrolled { background:rgba(26,46,26,0.97) !important; box-shadow:0 2px 20px rgba(0,0,0,0.4); }
+
+    /* Hero */
+    .hero-bg {
+      background-image: url('images/hero.jpg');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+    }
+    .hero-overlay {
+      background: linear-gradient(to bottom, rgba(0,0,0,0.45) 0%, rgba(10,30,10,0.75) 60%, rgba(5,20,5,0.9) 100%);
+    }
+
+    /* Parallax section */
+    .parallax-bg {
+      background-image: url('images/gallery3.png');
+      background-attachment: fixed;
+      background-size: cover;
+      background-position: center;
+    }
+    .cinematic-bg {
+      background-image: url('images/gallery2.png');
+      background-size: cover;
+      background-position: center;
+    }
+
+    /* Glassmorphism */
+    .glass {
+      background: rgba(255,255,255,0.08);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.15);
+    }
+    .glass-dark {
+      background: rgba(26,46,26,0.55);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+
+    /* Card hover lift */
+    .card-lift { transition: transform 0.35s cubic-bezier(.22,.68,0,1.2), box-shadow 0.35s ease; }
+    .card-lift:hover { transform: translateY(-10px); box-shadow: 0 24px 48px rgba(0,0,0,0.22); }
+
+    /* Gallery zoom */
+    .gallery-img { overflow: hidden; }
+    .gallery-img img { transition: transform 0.55s ease; }
+    .gallery-img:hover img { transform: scale(1.1); }
+
+    /* Activity card */
+    .activity-card { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+    .activity-card:hover { transform: translateY(-6px) scale(1.02); box-shadow: 0 16px 40px rgba(0,0,0,0.18); }
+
+    /* Floating WhatsApp */
+    .whatsapp-float {
+      position: fixed; bottom: 90px; right: 22px; z-index: 999;
+      animation: pulse-wa 2.5s infinite;
+    }
+    @keyframes pulse-wa {
+      0%,100%{ box-shadow:0 0 0 0 rgba(37,211,102,0.5); }
+      50%{ box-shadow:0 0 0 14px rgba(37,211,102,0); }
+    }
+
+    /* Mobile bottom bar */
+    .mobile-bar { display:none; }
+    @media(max-width:768px){ .mobile-bar{ display:flex; } .whatsapp-float{ bottom:80px; } }
+
+    /* Section reveal */
+    .reveal { opacity:0; transform:translateY(40px); }
+
+    /* Nav link underline */
+    .nav-link::after {
+      content:''; display:block; height:2px; width:0;
+      background:#4a8526; transition: width 0.3s;
+    }
+    .nav-link:hover::after { width:100%; }
+
+    /* Gradient text */
+    .gradient-text {
+      background: linear-gradient(135deg, #5fa832, #d4a843);
+      -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent;
+    }
+
+    /* Section divider */
+    .leaf-divider { color:#4a8526; opacity:0.35; font-size:1.5rem; letter-spacing:0.5rem; }
+  </style>
+</head>
+<body class="antialiased">
+
+<!-- ═══════════════════ NAVBAR ═══════════════════ -->
+<nav id="navbar" class="fixed top-0 left-0 right-0 z-50 bg-transparent py-4 px-6 md:px-12">
+  <div class="max-w-7xl mx-auto flex items-center justify-between">
+    <!-- Logo -->
+    <a href="#home" class="flex items-center gap-2">
+      <span class="text-2xl">🌿</span>
+      <div>
+        <div class="font-brand text-white text-xl font-bold leading-none tracking-wider">JIGLU VALLEY</div>
+        <div class="text-green-300 text-[10px] tracking-[0.2em] uppercase mt-1">Nature Resort</div>
+      </div>
+    </a>
+
+    <!-- Desktop Nav Links -->
+    <ul class="hidden lg:flex items-center gap-8 text-white text-sm font-medium">
+      <li><a href="#home"    class="nav-link hover:text-green-300 transition-colors">Home</a></li>
+      <li><a href="#about"   class="nav-link hover:text-green-300 transition-colors">About</a></li>
+      <li><a href="#stay"    class="nav-link hover:text-green-300 transition-colors">Stay</a></li>
+      <li><a href="#activities" class="nav-link hover:text-green-300 transition-colors">Activities</a></li>
+      <li><a href="#gallery" class="nav-link hover:text-green-300 transition-colors">Gallery</a></li>
+      <li><a href="#nearby"  class="nav-link hover:text-green-300 transition-colors">Nearby Places</a></li>
+      <li><a href="#contact" class="nav-link hover:text-green-300 transition-colors">Contact</a></li>
+    </ul>
+
+    <!-- CTA -->
+    <a href="tel:+918150002100" class="hidden lg:inline-flex items-center gap-2 bg-green-600 hover:bg-green-500 text-white px-5 py-2.5 rounded-full text-sm font-semibold transition-all duration-300">
+      <i class="fas fa-phone text-xs"></i> Book Now
+    </a>
+
+    <!-- Hamburger -->
+    <button id="menu-btn" class="lg:hidden text-white text-2xl focus:outline-none" aria-label="Open menu">
+      <i class="fas fa-bars"></i>
+    </button>
+  </div>
+
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" class="hidden lg:hidden mt-4 bg-forest-900/95 backdrop-blur rounded-2xl p-6 mx-2">
+    <ul class="flex flex-col gap-5 text-white text-base font-medium">
+      <li><a href="#home"       class="block hover:text-green-300 transition-colors" onclick="closeMobile()">Home</a></li>
+      <li><a href="#about"      class="block hover:text-green-300 transition-colors" onclick="closeMobile()">About</a></li>
+      <li><a href="#stay"       class="block hover:text-green-300 transition-colors" onclick="closeMobile()">Stay</a></li>
+      <li><a href="#activities" class="block hover:text-green-300 transition-colors" onclick="closeMobile()">Activities</a></li>
+      <li><a href="#gallery"    class="block hover:text-green-300 transition-colors" onclick="closeMobile()">Gallery</a></li>
+      <li><a href="#nearby"     class="block hover:text-green-300 transition-colors" onclick="closeMobile()">Nearby Places</a></li>
+      <li><a href="#contact"    class="block hover:text-green-300 transition-colors" onclick="closeMobile()">Contact</a></li>
+      <li class="pt-2 border-t border-white/10">
+        <a href="tel:+918150002100" class="flex items-center gap-2 bg-green-600 text-white px-5 py-3 rounded-full font-semibold justify-center">
+          <i class="fas fa-phone"></i> Call Now
+        </a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ═══════════════════ HERO ═══════════════════ -->
+<section id="home" class="hero-bg min-h-screen flex items-center relative">
+  <div class="hero-overlay absolute inset-0"></div>
+  <div class="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-12 pt-24">
+    <div id="hero-content" class="text-white max-w-3xl">
+      <div id="hero-tag" class="inline-flex items-center gap-2 bg-white/10 backdrop-blur border border-white/20 rounded-full px-4 py-1.5 text-sm text-green-300 font-medium mb-6">
+        <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
+        Now Open · Pandavapura, Mandya
+      </div>
+      <h1 id="hero-title" class="font-brand text-5xl md:text-8xl font-bold leading-none mb-6 tracking-wide">
+        JIGLU<br/><span class="gradient-text">VALLEY</span>
+      </h1>
+      <h2 id="hero-sub" class="font-serif text-2xl md:text-3xl text-gray-200 font-light mb-3">
+        Nature Resort &amp; Camping Experience<br class="hidden md:block"/> near Kunti Betta
+      </h2>
+      <p id="hero-desc" class="text-gray-300 text-lg mb-10">
+        Perfect weekend getaway near Pandavapura, Mandya.
+      </p>
+      <div id="hero-btns" class="flex flex-wrap gap-4">
+        <a href="tel:+918150002100"
+           class="flex items-center gap-2 bg-green-600 hover:bg-green-500 text-white px-7 py-4 rounded-full font-semibold text-lg transition-all duration-300 hover:shadow-lg hover:shadow-green-600/40">
+          <i class="fas fa-phone"></i> Call Now
+        </a>
+        <a href="https://wa.me/918150002100" target="_blank"
+           class="flex items-center gap-2 bg-[#25D366] hover:bg-[#1da851] text-white px-7 py-4 rounded-full font-semibold text-lg transition-all duration-300 hover:shadow-lg hover:shadow-green-500/40">
+          <i class="fab fa-whatsapp"></i> WhatsApp
+        </a>
+        <a href="https://maps.google.com/?q=Pandavapura,Karnataka" target="_blank"
+           class="flex items-center gap-2 bg-white/15 backdrop-blur border border-white/30 hover:bg-white/25 text-white px-7 py-4 rounded-full font-semibold text-lg transition-all duration-300">
+          <i class="fas fa-location-dot"></i> Get Directions
+        </a>
+      </div>
+    </div>
+
+    <!-- Scroll indicator -->
+    <div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center text-white/60 text-sm gap-2">
+      <span class="text-xs tracking-widest uppercase">Scroll</span>
+      <div class="w-px h-12 bg-white/30 rounded animate-pulse"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ LOCATION HIGHLIGHTS ═══════════════════ -->
+<section class="bg-forest-900 py-14 px-6 md:px-12">
+  <div class="max-w-6xl mx-auto">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+      <div class="reveal text-center p-6 rounded-2xl border border-green-800/50 hover:border-green-500/60 transition-all duration-300">
+        <div class="text-4xl md:text-5xl font-bold font-serif text-green-400 mb-2">20<span class="text-2xl">km</span></div>
+        <div class="text-gray-300 text-sm font-medium">From Mysore</div>
+      </div>
+      <div class="reveal text-center p-6 rounded-2xl border border-green-800/50 hover:border-green-500/60 transition-all duration-300">
+        <div class="text-3xl md:text-4xl font-bold font-serif text-green-400 mb-2">Around 100<span class="text-2xl">kms</span></div>
+        <div class="text-gray-300 text-sm font-medium">From Bangalore</div>
+      </div>
+      <div class="reveal text-center p-6 rounded-2xl border border-green-800/50 hover:border-green-500/60 transition-all duration-300">
+        <div class="text-3xl md:text-4xl font-bold font-serif text-green-400 mb-2">Kunti<br/>Betta</div>
+        <div class="text-gray-300 text-sm font-medium">Located Nearby</div>
+      </div>
+      <div class="reveal text-center p-6 rounded-2xl border border-green-800/50 hover:border-green-500/60 transition-all duration-300">
+        <div class="text-3xl md:text-4xl font-bold font-serif text-green-400 mb-2">Perfect<br/>Getaway</div>
+        <div class="text-gray-300 text-sm font-medium">For Families &amp; Friends</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ ABOUT ═══════════════════ -->
+<section id="about" class="py-24 px-6 md:px-12 bg-beige-100">
+  <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-16 items-center">
+    <div class="reveal">
+      <div class="leaf-divider mb-4">🌿 🌿 🌿</div>
+      <h2 class="font-serif text-4xl md:text-5xl font-bold text-forest-900 mb-6">About <span class="gradient-text">Jiglu Valley</span></h2>
+      <p class="text-gray-600 text-lg leading-relaxed mb-8">
+        Jiglu Valley is a peaceful nature retreat near Pandavapura offering adventure activities, beautiful views and relaxing stays surrounded by greenery.
+      </p>
+      <p class="text-gray-600 text-base leading-relaxed mb-8">
+        Nestled in the heart of Karnataka's scenic landscape, we offer a perfect blend of adventure and tranquility. Whether you're looking for a refreshing dip in the pool, an archery session, or simply want to unwind amidst nature — Jiglu Valley has it all.
+      </p>
+      <div class="flex flex-wrap gap-4">
+        <div class="flex items-center gap-2 bg-green-100 text-green-800 px-4 py-2 rounded-full text-sm font-medium">
+          <i class="fas fa-leaf"></i> Nature-First Experience
+        </div>
+        <div class="flex items-center gap-2 bg-green-100 text-green-800 px-4 py-2 rounded-full text-sm font-medium">
+          <i class="fas fa-utensils"></i> Unlimited Food
+        </div>
+        <div class="flex items-center gap-2 bg-green-100 text-green-800 px-4 py-2 rounded-full text-sm font-medium">
+          <i class="fas fa-campground"></i> Adventure Awaits
+        </div>
+      </div>
+    </div>
+    <div class="reveal relative">
+      <div class="rounded-3xl overflow-hidden shadow-2xl">
+        <img src="images/gallery1.jpg" alt="Jiglu Valley Resort" class="w-full h-96 object-cover"/>
+      </div>
+      <div class="absolute -bottom-6 -left-6 w-40 h-40 rounded-2xl overflow-hidden shadow-xl border-4 border-white">
+        <img src="images/gallery4.jpg" alt="Resort activities" class="w-full h-full object-cover"/>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ CINEMATIC IMAGE BREAK ═══════════════════ -->
+<section class="cinematic-bg relative h-72 md:h-96 flex items-center justify-center">
+  <div class="absolute inset-0 bg-forest-900/65"></div>
+  <div class="relative z-10 text-center text-white reveal">
+    <h2 class="font-serif text-4xl md:text-6xl font-bold">Experience Nature<br/><span class="gradient-text">Like Never Before</span></h2>
+  </div>
+</section>
+
+<!-- ═══════════════════ STAY OPTIONS ═══════════════════ -->
+<section id="stay" class="py-24 px-6 md:px-12 bg-forest-900">
+  <div class="max-w-6xl mx-auto">
+    <div class="text-center mb-16 reveal">
+      <div class="leaf-divider mb-4">🌿 🌿 🌿</div>
+      <h2 class="font-serif text-4xl md:text-5xl font-bold text-white mb-4">Choose Your <span class="gradient-text">Stay</span></h2>
+      <p class="text-gray-400 text-lg max-w-2xl mx-auto">From cozy family rooms to romantic tent stays under the stars — find the perfect accommodation for your retreat.</p>
+    </div>
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <!-- Family Room -->
+      <div class="card-lift glass rounded-3xl p-7 text-white cursor-pointer reveal">
+        <div class="w-14 h-14 bg-green-600/30 rounded-2xl flex items-center justify-center mb-5 text-3xl">🏡</div>
+        <h3 class="font-serif text-xl font-bold mb-2">Family Room</h3>
+        <p class="text-gray-300 text-sm leading-relaxed mb-4">Spacious, air-cooled rooms perfect for families seeking comfort amidst nature.</p>
+        <div class="text-green-400 text-sm font-semibold flex items-center gap-1">
+          <i class="fas fa-check-circle"></i> Available
+        </div>
+      </div>
+
+      <!-- Dormitory -->
+      <div class="card-lift glass rounded-3xl p-7 text-white cursor-pointer reveal">
+        <div class="w-14 h-14 bg-green-600/30 rounded-2xl flex items-center justify-center mb-5 text-3xl">🛏️</div>
+        <h3 class="font-serif text-xl font-bold mb-2">Dormitory</h3>
+        <p class="text-gray-300 text-sm leading-relaxed mb-4">Budget-friendly bunk stays perfect for group trips and friends out for adventure.</p>
+        <div class="text-green-400 text-sm font-semibold flex items-center gap-1">
+          <i class="fas fa-check-circle"></i> Available
+        </div>
+      </div>
+
+      <!-- Couples Room -->
+      <div class="card-lift glass rounded-3xl p-7 text-white cursor-pointer reveal">
+        <div class="w-14 h-14 bg-green-600/30 rounded-2xl flex items-center justify-center mb-5 text-3xl">💑</div>
+        <h3 class="font-serif text-xl font-bold mb-2">Couples Room</h3>
+        <p class="text-gray-300 text-sm leading-relaxed mb-4">Intimate, beautifully styled rooms with a romantic ambiance surrounded by greenery.</p>
+        <div class="text-green-400 text-sm font-semibold flex items-center gap-1">
+          <i class="fas fa-check-circle"></i> Available
+        </div>
+      </div>
+
+      <!-- Luxury Tent -->
+      <div class="card-lift glass rounded-3xl p-7 text-white cursor-pointer reveal">
+        <div class="w-14 h-14 bg-green-600/30 rounded-2xl flex items-center justify-center mb-5 text-3xl">⛺</div>
+        <h3 class="font-serif text-xl font-bold mb-2">Luxury Tent Stays</h3>
+        <p class="text-gray-300 text-sm leading-relaxed mb-4">Glamping under the stars — premium tents with cozy bedding and nature all around.</p>
+        <div class="text-green-400 text-sm font-semibold flex items-center gap-1">
+          <i class="fas fa-check-circle"></i> Available
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ DAY OUT PACKAGE ═══════════════════ -->
+<section class="py-20 px-6 md:px-12 bg-gradient-to-br from-green-700 via-green-600 to-forest-800">
+  <div class="max-w-4xl mx-auto text-center reveal">
+    <span class="inline-block bg-white/20 text-white text-sm font-semibold px-4 py-1.5 rounded-full mb-6 tracking-widest uppercase">Special Offer</span>
+    <h2 class="font-serif text-4xl md:text-6xl font-bold text-white mb-4">Day Out Package</h2>
+    <div class="text-gold-400 font-serif text-3xl md:text-4xl font-semibold mb-6">Starting from <span class="text-5xl md:text-7xl text-white">₹999</span> <span class="text-lg text-white/70">/ person</span></div>
+    <p class="text-green-100 text-lg mb-10 max-w-xl mx-auto">Activities, unlimited food, and unforgettable memories — all in one day. Perfect for corporate outings, college trips and family fun.</p>
+    <a href="https://wa.me/918150002100" target="_blank"
+       class="inline-flex items-center gap-3 bg-white text-green-800 hover:bg-green-50 px-10 py-4 rounded-full font-bold text-xl transition-all duration-300 hover:shadow-2xl">
+      <i class="fab fa-whatsapp text-green-600"></i> Book Day Out Now
+    </a>
+  </div>
+</section>
+
+
+<!-- ═══════════════════ ACTIVITIES ═══════════════════ -->
+<section id="activities" class="py-24 px-6 md:px-12 bg-beige-100">
+  <div class="max-w-6xl mx-auto">
+    <div class="text-center mb-16 reveal">
+      <div class="leaf-divider mb-4">🌿 🌿 🌿</div>
+      <h2 class="font-serif text-4xl md:text-5xl font-bold text-forest-900 mb-4">Adventure <span class="gradient-text">Activities</span></h2>
+      <p class="text-gray-600 text-lg max-w-2xl mx-auto">Dive into a world of fun and adventure with our wide range of exciting activities for all ages.</p>
+    </div>
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
+      <div class="activity-card bg-white rounded-2xl overflow-hidden shadow-md cursor-pointer reveal">
+        <img src="images/activity1.jpg" alt="Swimming Pool" class="w-full h-36 object-cover" loading="lazy"/>
+        <div class="p-4 text-center"><h3 class="font-semibold text-forest-900">Swimming Pool</h3></div>
+      </div>
+      <div class="activity-card bg-white rounded-2xl overflow-hidden shadow-md cursor-pointer reveal">
+        <img src="images/activity2.jpg" alt="Archery" class="w-full h-36 object-cover" loading="lazy"/>
+        <div class="p-4 text-center"><h3 class="font-semibold text-forest-900">Archery</h3></div>
+      </div>
+      <div class="activity-card bg-white rounded-2xl overflow-hidden shadow-md cursor-pointer reveal">
+        <img src="images/activity3.jpg" alt="Fishing" class="w-full h-36 object-cover" loading="lazy"/>
+        <div class="p-4 text-center"><h3 class="font-semibold text-forest-900">Fishing</h3></div>
+      </div>
+      <div class="activity-card bg-white rounded-2xl overflow-hidden shadow-md cursor-pointer reveal">
+        <img src="images/activity6.jpg" alt="Rain Dance" class="w-full h-36 object-cover" loading="lazy"/>
+        <div class="p-4 text-center"><h3 class="font-semibold text-forest-900">Rain Dance</h3></div>
+      </div>
+      <div class="activity-card bg-white rounded-2xl overflow-hidden shadow-md cursor-pointer reveal">
+        <img src="images/activity4.jpg" alt="Board Games" class="w-full h-36 object-cover" loading="lazy"/>
+        <div class="p-4 text-center"><h3 class="font-semibold text-forest-900">Board Games</h3></div>
+      </div>
+      <div class="activity-card bg-white rounded-2xl overflow-hidden shadow-md cursor-pointer reveal">
+        <img src="images/activity7.jpg" alt="Outdoor Games" class="w-full h-36 object-cover"/>
+        <div class="p-4 text-center"><h3 class="font-semibold text-forest-900">Outdoor Games</h3></div>
+      </div>
+      <div class="activity-card bg-white rounded-2xl overflow-hidden shadow-md cursor-pointer reveal">
+        <img src="images/activity8.webp" alt="Indoor Games" class="w-full h-36 object-cover"/>
+        <div class="p-4 text-center"><h3 class="font-semibold text-forest-900">Indoor Games</h3></div>
+      </div>
+      <div class="activity-card bg-white rounded-2xl overflow-hidden shadow-md cursor-pointer reveal">
+        <img src="images/activity5.jpg" alt="Riverside Volleyball" class="w-full h-36 object-cover" loading="lazy"/>
+        <div class="p-4 text-center"><h3 class="font-semibold text-forest-900">Riverside Volleyball</h3></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ PARALLAX ═══════════════════ -->
+<section class="parallax-bg relative h-80 md:h-[420px] flex items-center justify-center">
+  <div class="absolute inset-0 bg-forest-900/60"></div>
+  <div class="relative z-10 text-center text-white reveal px-6">
+    <h2 class="font-serif text-4xl md:text-6xl font-bold mb-4 uppercase tracking-[0.2em] font-brand">Escape the City.</h2>
+    <h2 class="font-serif text-4xl md:text-6xl font-bold uppercase tracking-[0.2em] font-brand"><span class="gradient-text">Embrace the Valley.</span></h2>
+  </div>
+</section>
+
+<!-- ═══════════════════ GALLERY ═══════════════════ -->
+<section id="gallery" class="py-24 px-6 md:px-12 bg-forest-900">
+  <div class="max-w-6xl mx-auto">
+    <div class="text-center mb-16 reveal">
+      <div class="leaf-divider mb-4">🌿 🌿 🌿</div>
+      <h2 class="font-serif text-4xl md:text-5xl font-bold text-white mb-4">Our <span class="gradient-text">Gallery</span></h2>
+      <p class="text-gray-400 text-lg max-w-2xl mx-auto">A glimpse of the moments and memories waiting for you at Jiglu Valley.</p>
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+      <div class="gallery-img rounded-2xl overflow-hidden h-56 md:h-72 reveal shadow-lg">
+        <img src="images/gallery1.jpg" alt="Resort pool" class="w-full h-full object-cover"/>
+      </div>
+      <div class="gallery-img rounded-2xl overflow-hidden h-56 md:h-72 reveal shadow-lg">
+        <img src="images/gallery2.png" alt="Luxury tents" class="w-full h-full object-cover"/>
+      </div>
+      <div class="gallery-img rounded-2xl overflow-hidden h-56 md:h-72 reveal shadow-lg">
+        <img src="images/gallery3.png" alt="Valley views" class="w-full h-full object-cover"/>
+      </div>
+      <div class="gallery-img rounded-2xl overflow-hidden h-56 md:h-72 reveal shadow-lg">
+        <img src="images/gallery4.jpg" alt="Bonfire nights" class="w-full h-full object-cover"/>
+      </div>
+      <div class="gallery-img rounded-2xl overflow-hidden h-56 md:h-72 reveal shadow-lg">
+        <img src="images/gallery5.png" alt="Riverside dining" class="w-full h-full object-cover"/>
+      </div>
+      <div class="gallery-img rounded-2xl overflow-hidden h-56 md:h-72 reveal shadow-lg">
+        <img src="images/gallery6.jpg" alt="Resort pool view" class="w-full h-full object-cover"/>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ NEARBY PLACES ═══════════════════ -->
+<section id="nearby" class="py-24 px-6 md:px-12 bg-beige-100">
+  <div class="max-w-6xl mx-auto">
+    <div class="text-center mb-16 reveal">
+      <div class="leaf-divider mb-4">🌿 🌿 🌿</div>
+      <h2 class="font-serif text-4xl md:text-5xl font-bold text-forest-900 mb-4">Nearby <span class="gradient-text">Attractions</span></h2>
+      <p class="text-gray-600 text-lg max-w-2xl mx-auto">Explore the rich cultural and natural heritage around Jiglu Valley.</p>
+    </div>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div class="card-lift bg-white rounded-2xl p-6 shadow-md reveal text-center">
+        <div class="text-4xl mb-3">⛰️</div>
+        <h3 class="font-serif text-xl font-bold text-forest-900 mb-2">Kunti Betta</h3>
+        <p class="text-gray-500 text-sm">Iconic twin rock peaks with panoramic views, trekking and ancient Pandava folklore.</p>
+        <div class="mt-3 text-green-600 text-sm font-medium"><i class="fas fa-map-pin mr-1"></i>~2 km away</div>
+      </div>
+      <div class="card-lift bg-white rounded-2xl p-6 shadow-md reveal text-center">
+        <div class="text-4xl mb-3">🦜</div>
+        <h3 class="font-serif text-xl font-bold text-forest-900 mb-2">Ranganathittu</h3>
+        <p class="text-gray-500 text-sm">One of Karnataka's premier bird sanctuaries — home to painted storks, open-bill storks and more.</p>
+        <div class="mt-3 text-green-600 text-sm font-medium"><i class="fas fa-map-pin mr-1"></i>~20 km away</div>
+      </div>
+      <div class="card-lift bg-white rounded-2xl p-6 shadow-md reveal text-center">
+        <div class="text-4xl mb-3">🛕</div>
+        <h3 class="font-serif text-xl font-bold text-forest-900 mb-2">Nambi Narayana Temple</h3>
+        <p class="text-gray-500 text-sm">An ancient Vishnu temple with serene surroundings and rich spiritual significance.</p>
+        <div class="mt-3 text-green-600 text-sm font-medium"><i class="fas fa-map-pin mr-1"></i>Nearby</div>
+      </div>
+      <div class="card-lift bg-white rounded-2xl p-6 shadow-md reveal text-center">
+        <div class="text-4xl mb-3">💧</div>
+        <h3 class="font-serif text-xl font-bold text-forest-900 mb-2">Thonnur Kere</h3>
+        <p class="text-gray-500 text-sm">A tranquil ancient lake perfect for evening walks, birdwatching and peaceful reflection.</p>
+        <div class="mt-3 text-green-600 text-sm font-medium"><i class="fas fa-map-pin mr-1"></i>Nearby</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ WHY CHOOSE US ═══════════════════ -->
+<section class="py-20 px-6 md:px-12 bg-forest-900">
+  <div class="max-w-5xl mx-auto">
+    <div class="text-center mb-14 reveal">
+      <h2 class="font-serif text-4xl md:text-5xl font-bold text-white mb-4">Why Choose <span class="gradient-text">Jiglu Valley?</span></h2>
+    </div>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="flex items-start gap-4 glass rounded-2xl p-6 reveal">
+        <div class="text-3xl shrink-0">🌿</div>
+        <div><h4 class="font-semibold text-white mb-1">Nature-Filled Environment</h4><p class="text-gray-400 text-sm">Surrounded by lush greenery, fresh air and breathtaking natural beauty.</p></div>
+      </div>
+      <div class="flex items-start gap-4 glass rounded-2xl p-6 reveal">
+        <div class="text-3xl shrink-0">🍛</div>
+        <div><h4 class="font-semibold text-white mb-1">Unlimited Veg &amp; Non-Veg Food</h4><p class="text-gray-400 text-sm">Delicious home-style meals included — eat as much as you want!</p></div>
+      </div>
+      <div class="flex items-start gap-4 glass rounded-2xl p-6 reveal">
+        <div class="text-3xl shrink-0">👨‍👩‍👧‍👦</div>
+        <div><h4 class="font-semibold text-white mb-1">Perfect for Friends &amp; Family</h4><p class="text-gray-400 text-sm">Activities and spaces designed for everyone — kids, adults and seniors.</p></div>
+      </div>
+      <div class="flex items-start gap-4 glass rounded-2xl p-6 reveal">
+        <div class="text-3xl shrink-0">🏹</div>
+        <div><h4 class="font-semibold text-white mb-1">Adventure Activities</h4><p class="text-gray-400 text-sm">From archery to rain dance, keep the adrenaline pumping all day.</p></div>
+      </div>
+      <div class="flex items-start gap-4 glass rounded-2xl p-6 reveal">
+        <div class="text-3xl shrink-0">🌄</div>
+        <div><h4 class="font-semibold text-white mb-1">Beautiful Nature Views</h4><p class="text-gray-400 text-sm">Stunning valley views, sunrise mornings and starry nights await you.</p></div>
+      </div>
+      <div class="flex items-start gap-4 glass rounded-2xl p-6 reveal">
+        <div class="text-3xl shrink-0">📍</div>
+        <div><h4 class="font-semibold text-white mb-1">Convenient Location</h4><p class="text-gray-400 text-sm">Just 20 km from Mysore and 100 km from Bangalore — easy to reach.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ INSTAGRAM ═══════════════════ -->
+<section class="py-20 px-6 md:px-12 bg-beige-100">
+  <div class="max-w-4xl mx-auto text-center reveal">
+    <div class="text-4xl mb-4">📸</div>
+    <h2 class="font-serif text-4xl font-bold text-forest-900 mb-3">Follow Us on <span class="gradient-text">Instagram</span></h2>
+    <p class="text-gray-600 mb-10">Stay updated with our latest moments, events and offers.</p>
+    <div class="grid grid-cols-3 gap-4 mb-10">
+      <a href="https://instagram.com/jiglu_valley" target="_blank" class="gallery-img rounded-2xl overflow-hidden h-36 md:h-52 shadow-md">
+        <img src="images/gallery2.png" alt="Instagram post 1" class="w-full h-full object-cover"/>
+      </a>
+      <a href="https://instagram.com/jiglu_valley" target="_blank" class="gallery-img rounded-2xl overflow-hidden h-36 md:h-52 shadow-md">
+        <img src="images/gallery5.png" alt="Instagram post 2" class="w-full h-full object-cover"/>
+      </a>
+      <a href="https://instagram.com/jiglu_valley" target="_blank" class="gallery-img rounded-2xl overflow-hidden h-36 md:h-52 shadow-md">
+        <img src="images/gallery4.jpg" alt="Instagram post 3" class="w-full h-full object-cover"/>
+      </a>
+    </div>
+    <a href="https://instagram.com/jiglu_valley" target="_blank"
+       class="inline-flex items-center gap-3 bg-gradient-to-r from-purple-600 via-pink-500 to-orange-400 text-white px-8 py-4 rounded-full font-bold text-lg transition-all duration-300 hover:shadow-xl hover:scale-105">
+      <i class="fab fa-instagram text-xl"></i> @jiglu_valley
+    </a>
+  </div>
+</section>
+
+<!-- ═══════════════════ CONTACT ═══════════════════ -->
+<section id="contact" class="py-24 px-6 md:px-12 bg-forest-900">
+  <div class="max-w-3xl mx-auto text-center reveal">
+    <div class="leaf-divider mb-4">🌿 🌿 🌿</div>
+    <h2 class="font-serif text-4xl md:text-5xl font-bold text-white mb-4">Get in <span class="gradient-text">Touch</span></h2>
+    <p class="text-gray-400 text-lg mb-4">We'd love to host you. Reach out for bookings, packages and queries.</p>
+    <a href="tel:+918150002100" class="font-serif text-4xl md:text-5xl font-bold text-green-400 hover:text-green-300 transition-colors block mb-10">+91 8150002100</a>
+    <div class="flex justify-center gap-5 flex-wrap">
+      <a href="tel:+918150002100"
+         class="flex items-center gap-3 bg-green-600 hover:bg-green-500 text-white px-9 py-4 rounded-full font-bold text-xl transition-all duration-300 hover:shadow-lg hover:shadow-green-600/40">
+        <i class="fas fa-phone"></i> Call Now
+      </a>
+      <a href="https://wa.me/918150002100" target="_blank"
+         class="flex items-center gap-3 bg-[#25D366] hover:bg-[#1da851] text-white px-9 py-4 rounded-full font-bold text-xl transition-all duration-300 hover:shadow-lg hover:shadow-green-500/40">
+        <i class="fab fa-whatsapp text-2xl"></i> WhatsApp Now
+      </a>
+    </div>
+    <div class="mt-10 flex items-center justify-center gap-2 text-gray-400 text-base">
+      <i class="fas fa-location-dot text-green-500"></i>
+      <a href="https://maps.google.com/?q=Jiglu+Valley+Pandavapura+Mandya+Karnataka" target="_blank" class="hover:text-green-500 transition-colors">Pandavapura, Mandya, Karnataka</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ FOOTER ═══════════════════ -->
+<footer class="bg-[#0d1f0d] text-gray-300 py-14 px-6 md:px-12">
+  <div class="max-w-6xl mx-auto grid md:grid-cols-4 gap-10">
+    <!-- Brand -->
+    <div class="md:col-span-2">
+      <div class="flex items-center gap-2 mb-4">
+        <span class="text-2xl">🌿</span>
+        <div>
+          <div class="font-brand text-white text-2xl font-bold tracking-wider">JIGLU VALLEY</div>
+          <div class="text-green-400 text-xs tracking-[0.2em] uppercase mt-1">Nature Resort &amp; Camping</div>
+        </div>
+      </div>
+      <p class="text-gray-500 text-sm leading-relaxed max-w-sm">A peaceful nature retreat near Pandavapura offering adventure, beautiful views and relaxing stays surrounded by greenery.</p>
+      <div class="mt-6 flex items-center gap-2 text-sm text-gray-400">
+        <i class="fas fa-location-dot text-green-400"></i> <a href="https://maps.google.com/?q=Jiglu+Valley+Pandavapura+Mandya+Karnataka" target="_blank" class="hover:text-green-400 transition-colors">Pandavapura, Mandya, Karnataka</a>
+      </div>
+      <div class="mt-2 flex items-center gap-2 text-sm text-gray-400">
+        <i class="fas fa-phone text-green-400"></i>
+        <a href="tel:+918150002100" class="hover:text-green-400 transition-colors">+91 8150002100</a>
+      </div>
+    </div>
+
+    <!-- Quick Links -->
+    <div>
+      <h4 class="font-semibold text-white mb-5 text-sm uppercase tracking-widest">Quick Links</h4>
+      <ul class="space-y-3 text-sm">
+        <li><a href="#home"       class="hover:text-green-400 transition-colors">Home</a></li>
+        <li><a href="#activities" class="hover:text-green-400 transition-colors">Activities</a></li>
+        <li><a href="#gallery"    class="hover:text-green-400 transition-colors">Gallery</a></li>
+        <li><a href="#contact"    class="hover:text-green-400 transition-colors">Contact</a></li>
+      </ul>
+    </div>
+
+    <!-- Social -->
+    <div>
+      <h4 class="font-semibold text-white mb-5 text-sm uppercase tracking-widest">Follow Us</h4>
+      <a href="https://instagram.com/jiglu_valley" target="_blank"
+         class="inline-flex items-center gap-3 bg-gradient-to-r from-purple-600 via-pink-500 to-orange-400 text-white px-5 py-3 rounded-full text-sm font-semibold hover:shadow-lg transition-all duration-300">
+        <i class="fab fa-instagram text-lg"></i> @jiglu_valley
+      </a>
+      <div class="mt-6">
+        <a href="https://wa.me/918150002100" target="_blank"
+           class="inline-flex items-center gap-2 text-[#25D366] hover:text-[#1da851] text-sm font-medium transition-colors">
+          <i class="fab fa-whatsapp text-xl"></i> WhatsApp Us
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="max-w-6xl mx-auto mt-12 pt-6 border-t border-white/10 text-center text-gray-600 text-sm">
+    &copy; 2026 Jiglu Valley. All Rights Reserved.
+  </div>
+</footer>
+
+<!-- ═══════════════════ FLOATING WHATSAPP ═══════════════════ -->
+<a href="https://wa.me/918150002100" target="_blank" id="wa-float"
+   class="whatsapp-float w-14 h-14 bg-[#25D366] rounded-full flex items-center justify-center text-white text-2xl shadow-xl hover:bg-[#1da851] transition-colors"
+   aria-label="WhatsApp">
+  <i class="fab fa-whatsapp"></i>
+</a>
+
+<!-- ═══════════════════ MOBILE STICKY BAR ═══════════════════ -->
+<div class="mobile-bar fixed bottom-0 left-0 right-0 z-50 bg-forest-900/97 backdrop-blur border-t border-green-800/40 py-2 px-4 gap-2 justify-around">
+  <a href="tel:+918150002100"
+     class="flex flex-col items-center gap-1 text-white text-xs font-medium px-4 py-2 rounded-xl bg-green-700/60 flex-1">
+    <i class="fas fa-phone text-lg"></i> Call
+  </a>
+  <a href="https://wa.me/918150002100" target="_blank"
+     class="flex flex-col items-center gap-1 text-white text-xs font-medium px-4 py-2 rounded-xl bg-[#25D366]/80 flex-1">
+    <i class="fab fa-whatsapp text-lg"></i> WhatsApp
+  </a>
+  <a href="https://maps.google.com/?q=Pandavapura,Karnataka" target="_blank"
+     class="flex flex-col items-center gap-1 text-white text-xs font-medium px-4 py-2 rounded-xl bg-blue-700/60 flex-1">
+    <i class="fas fa-location-dot text-lg"></i> Directions
+  </a>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
