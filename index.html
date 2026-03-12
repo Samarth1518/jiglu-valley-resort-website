@@ -43,7 +43,7 @@
 
   <style>
     html { scroll-behavior: smooth; }
-    body { font-family:'Inter',sans-serif; background:#fdf8f0; color:#1a2e1a; }
+    body { font-family:'Inter',sans-serif; background:#fdf8f0; color:#1a2e1a; overflow-x:hidden; }
     .font-serif { font-family:'Playfair Display',serif; }
     .font-brand { font-family:'Cinzel', serif; letter-spacing: 0.1em; }
 
@@ -58,6 +58,12 @@
       background-position: center;
       background-attachment: fixed;
     }
+    @media(max-width:768px){
+  .hero-bg{
+    background-image:url('images/hero-mobile.jpg');
+    background-attachment:scroll;
+  }
+}
     .hero-overlay {
       background: linear-gradient(to bottom, rgba(0,0,0,0.45) 0%, rgba(10,30,10,0.75) 60%, rgba(5,20,5,0.9) 100%);
     }
@@ -113,8 +119,13 @@
     }
 
     /* Mobile bottom bar */
-    .mobile-bar { display:none; }
-    @media(max-width:768px){ .mobile-bar{ display:flex; } .whatsapp-float{ bottom:80px; } }
+    /* Mobile bottom bar */
+.mobile-bar { display:none; }
+
+@media(max-width:768px){
+  .mobile-bar{ display:flex; }
+  .whatsapp-float{ display:none; } 
+}
 
     /* Section reveal */
     .reveal { opacity:0; transform:translateY(40px); }
