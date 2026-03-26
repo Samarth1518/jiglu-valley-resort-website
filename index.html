@@ -48,9 +48,18 @@
     .font-serif { font-family:'Playfair Display',serif; }
     .font-brand { font-family:'Cinzel', serif; letter-spacing: 0.1em; }
 
+    img {
+  max-width: 100%;
+  height: auto;
+}
+
     /* Navbar */
     #navbar { transition: background 0.4s, box-shadow 0.4s; }
     #navbar.scrolled { background:rgba(26,46,26,0.97) !important; box-shadow:0 2px 20px rgba(0,0,0,0.4); }
+
+    body {
+  overflow-x: hidden;
+}
 
     /* Hero */
     .hero-bg {
@@ -451,7 +460,7 @@
     What Our Guests Say 🌿
   </h2>
 
-  <div id="homeReviews" style="max-width:900px; margin:auto;"></div>
+  <div id="homeReviews" style="max-width:900px; padding:0 15px;">
 
   <a href="reviews.html">
     <button style="
