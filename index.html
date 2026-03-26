@@ -735,18 +735,26 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 async function loadHomeReviews() {
-  const snapshot = await getDocs(collection(db, "reviews"));
+  const querySnapshot = await getDocs(collection(db, "reviews"));
   const container = document.getElementById("homeReviews");
 
-  if (!container) return;
+  container.innerHTML = "";
 
-  let count = 0;
+  let reviews = [];
 
-  snapshot.forEach(doc => {
-    if (count >= 3) return;
+  // Step 1: store all reviews
+  querySnapshot.forEach((doc) => {
+    reviews.push(doc.data());
+  });
 
-    const data = doc.data();
+  // Step 2: sort by rating (highest first)
+  reviews.sort((a, b) => b.rating - a.rating);
 
+  // Step 3: take top 3
+  const topReviews = reviews.slice(0, 3);
+
+  // Step 4: display
+  topReviews.forEach((data) => {
     const stars = "★".repeat(data.rating) + "☆".repeat(5 - data.rating);
 
     const div = document.createElement("div");
@@ -754,23 +762,19 @@ async function loadHomeReviews() {
     div.style = `
       background:white;
       padding:20px;
-      margin:15px 0;
-      border-radius:12px;
-      box-shadow:0 5px 15px rgba(0,0,0,0.1);
+      margin:15px auto;
+      border-radius:14px;
+      max-width:750px;
       text-align:left;
     `;
 
     div.innerHTML = `
       <p style="color:#f4c430; font-size:22px;">${stars}</p>
       <h3 style="color:#2e7d32;">${data.name}</h3>
-      <p style="color:#66bb6a; font-style:italic;">
-  "${data.review}"
-</p>
+      <p>"${data.review.substring(0,100)}..."</p>
     `;
 
     container.appendChild(div);
-
-    count++;
   });
 }
 
