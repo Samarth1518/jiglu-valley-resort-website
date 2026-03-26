@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reviews - Jiglu Valley</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+    }
+
+    /* HERO */
+    .hero {
+      height: 45vh;
+      background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
+                  url('images/hero.jpg');
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: 2.5rem;
+      margin: 0;
+    }
+
+    /* FORM */
+    .form-container {
+      max-width: 500px;
+      margin: -60px auto 30px;
+      background: white;
+      padding: 25px;
+      border-radius: 14px;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+
+    textarea {
+      min-height: 100px;
+      resize: none;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      background: #2e7d32;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    button:hover {
+      background: #1b5e20;
+    }
+
+    /* REVIEWS */
+    .reviews {
+      max-width: 750px;
+      margin: auto;
+      padding: 20px;
+    }
+
+    .reviews h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .card {
+      background: white;
+      padding: 18px;
+      margin: 12px 0;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    .card h3 {
+      margin: 0 0 5px;
+      color: #2e7d32;
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div>
+      <h1>Share Your Experience 🌿</h1>
+      <p>We’d love to hear your feedback</p>
+    </div>
+  </div>
+
+  <!-- FORM -->
+  <div class="form-container">
+    <input type="text" id="name" placeholder="Your Name">
+    <textarea id="review" placeholder="Your Review"></textarea>
+    <button onclick="submitReview()">Submit Review</button>
+  </div>
+
+  <!-- REVIEWS -->
+  <div class="reviews">
+    <h2>Customer Reviews</h2>
+    <div id="reviewsList"></div>
+  </div>
+
+  <!-- FIREBASE -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCOtlm8NiNYLaBKU1WhkCSZ-HWizk2dVKs",
+      authDomain: "jiglu-valley.firebaseapp.com",
+      projectId: "jiglu-valley",
+      storageBucket: "jiglu-valley.firebasestorage.app",
+      messagingSenderId: "619513636984",
+      appId: "1:619513636984:web:7231ae82bb9ab4fef3258d"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    async function submitReview() {
+      const name = document.getElementById("name").value;
+      const review = document.getElementById("review").value;
+
+      if (!name || !review) {
+        alert("Please fill all fields");
+        return;
+      }
+
+      await addDoc(collection(db, "reviews"), {
+        name,
+        review,
+        time: new Date()
+      });
+
+      alert("Review submitted!");
+      loadReviews();
+    }
+
+    async function loadReviews() {
+      const querySnapshot = await getDocs(collection(db, "reviews"));
+      const list = document.getElementById("reviewsList");
+
+      list.innerHTML = "";
+
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+
+        list.innerHTML += `
+          <div class="card">
+            <h3>${data.name}</h3>
+            <p>${data.review}</p>
+          </div>
+        `;
+      });
+    }
+
+    window.onload = loadReviews;
+  </script>
+
+</body>
+</html>
