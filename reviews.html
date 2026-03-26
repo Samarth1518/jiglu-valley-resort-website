@@ -95,6 +95,26 @@
       margin: 0 0 5px;
       color: #2e7d32;
     }
+    .stars {
+  display: flex;
+  gap: 8px;
+  margin: 10px 0 15px;
+}
+
+.stars span {
+  font-size: 28px;
+  cursor: pointer;
+  color: #ccc;
+  transition: 0.2s;
+}
+
+.stars span:hover {
+  transform: scale(1.2);
+}
+
+.stars span.active {
+  color: #facc15;
+}
 
   </style>
 </head>
@@ -112,6 +132,13 @@
   <!-- FORM -->
   <div class="form-container">
     <input type="text" id="name" placeholder="Your Name">
+    <div class="stars">
+  <span onclick="setRating(1)">★</span>
+  <span onclick="setRating(2)">★</span>
+  <span onclick="setRating(3)">★</span>
+  <span onclick="setRating(4)">★</span>
+  <span onclick="setRating(5)">★</span>
+</div>
     <textarea id="review" placeholder="Your Review"></textarea>
     <button onclick="submitReview()">Submit Review</button>
     <div id="reviews-container"></div>
@@ -180,11 +207,26 @@
     window.onload = loadReviews;
   </script>
 <script>
+    let selectedRating = 0;
+
+function setRating(rating) {
+  selectedRating = rating;
+
+  const stars = document.querySelectorAll(".stars span");
+
+  stars.forEach((star, index) => {
+    if (index < rating) {
+      star.classList.add("active");
+    } else {
+      star.classList.remove("active");
+    }
+  });
+}
 function submitReview() {
   const name = document.getElementById("name").value;
   const review = document.getElementById("review").value;
 
-  if (!name || !review) {
+  if (!name || !review || selectedRating === 0) {
     alert("Please fill all fields");
     return;
   }
@@ -198,8 +240,10 @@ function submitReview() {
   div.style.borderRadius = "10px";
   div.style.boxShadow = "0 4px 10px rgba(0,0,0,0.1)";
 
+  const stars = "★".repeat(selectedRating) + "☆".repeat(5 - selectedRating);
   div.innerHTML = `
     <h3 style="color:#2e7d32;">${name}</h3>
+    <p style="color:gold; margin:5px 0;">${stars}</p>
     <p>${review}</p>
   `;
 
