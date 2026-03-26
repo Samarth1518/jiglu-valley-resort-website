@@ -115,6 +115,18 @@
 .stars span.active {
   color: #facc15;
 }
+.review-card {
+  background: white;
+  padding: 20px;
+  margin: 15px 0;
+  border-radius: 14px;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+  transition: 0.3s;
+}
+
+.review-card:hover {
+  transform: translateY(-5px);
+}
 
   </style>
 </head>
@@ -234,18 +246,14 @@ function submitReview() {
   const container = document.getElementById("reviews-container");
 
   const div = document.createElement("div");
-  div.style.background = "white";
-  div.style.padding = "15px";
-  div.style.margin = "10px";
-  div.style.borderRadius = "10px";
-  div.style.boxShadow = "0 4px 10px rgba(0,0,0,0.1)";
+  div.classList.add("review-card");
 
   const stars = "★".repeat(selectedRating) + "☆".repeat(5 - selectedRating);
   div.innerHTML = `
-    <h3 style="color:#2e7d32;">${name}</h3>
-    <p style="color:gold; margin:5px 0;">${stars}</p>
-    <p>${review}</p>
-  `;
+  <p style="color:gold; font-size:18px;">${stars}</p>
+  <h3 style="margin:5px 0; color:#2e7d32;">${name}</h3>
+  <p style="font-style:italic; color:#555;">"${review}"</p>
+`;
 
   container.prepend(div);
 
