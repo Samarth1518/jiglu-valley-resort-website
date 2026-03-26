@@ -769,10 +769,17 @@ async function loadHomeReviews() {
     `;
 
     div.innerHTML = `
-      <p style="color:#f4c430; font-size:22px;">${stars}</p>
-      <h3 style="color:#2e7d32;">${data.name}</h3>
-      <p>"${data.review.substring(0,100)}..."</p>
-    `;
+  <p style="color:#f4c430; font-size:22px;">${stars}</p>
+  <h3 style="color:#a5d6a7;">${data.name}</h3>
+  <p style="
+    color:#d0f0d0;
+    font-size:15px;
+    margin-top:5px;
+    line-height:1.5;
+  ">
+    "${data.review.substring(0,100)}..."
+  </p>
+`;
 
     container.appendChild(div);
   });
