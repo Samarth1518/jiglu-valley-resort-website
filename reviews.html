@@ -12,7 +12,6 @@
       background: #f5f5f5;
     }
 
-    /* HERO */
     .hero {
       height: 45vh;
       background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
@@ -26,12 +25,6 @@
       text-align: center;
     }
 
-    .hero h1 {
-      font-size: 2.5rem;
-      margin: 0;
-    }
-
-    /* FORM */
     .form-container {
       max-width: 500px;
       margin: -60px auto 30px;
@@ -47,12 +40,6 @@
       margin: 10px 0;
       border-radius: 10px;
       border: 1px solid #ccc;
-      font-size: 14px;
-    }
-
-    textarea {
-      min-height: 100px;
-      resize: none;
     }
 
     button {
@@ -62,107 +49,68 @@
       color: white;
       border: none;
       border-radius: 10px;
-      font-weight: bold;
       cursor: pointer;
-      font-size: 16px;
     }
 
-    button:hover {
-      background: #1b5e20;
+    .stars {
+      display: flex;
+      gap: 8px;
+      margin: 10px 0 15px;
     }
 
-    /* REVIEWS */
+    .stars span {
+      font-size: 28px;
+      cursor: pointer;
+      color: #ccc;
+    }
+
+    .stars span.active {
+      color: #facc15;
+    }
+
     .reviews {
       max-width: 750px;
       margin: auto;
       padding: 20px;
     }
 
-    .reviews h2 {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-
-    .card {
+    .review-card {
       background: white;
-      padding: 18px;
-      margin: 12px 0;
-      border-radius: 12px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      padding: 20px;
+      margin: 15px 0;
+      border-radius: 14px;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
     }
-
-    .card h3 {
-      margin: 0 0 5px;
-      color: #2e7d32;
-    }
-    .stars {
-  display: flex;
-  gap: 8px;
-  margin: 10px 0 15px;
-}
-
-.stars span {
-  font-size: 28px;
-  cursor: pointer;
-  color: #ccc;
-  transition: 0.2s;
-}
-
-.stars span:hover {
-  transform: scale(1.2);
-}
-
-.stars span.active {
-  color: #facc15;
-}
-.review-card {
-  background: white;
-  padding: 20px;
-  margin: 15px 0;
-  border-radius: 14px;
-  box-shadow: 0 6px 15px rgba(0,0,0,0.1);
-  transition: 0.3s;
-}
-
-.review-card:hover {
-  transform: translateY(-5px);
-}
-
   </style>
 </head>
 
 <body>
 
-  <!-- HERO -->
   <div class="hero">
-    <div>
-      <h1>Share Your Experience 🌿</h1>
-      <p>We’d love to hear your feedback</p>
-    </div>
+    <h1>Share Your Experience 🌿</h1>
   </div>
 
-  <!-- FORM -->
   <div class="form-container">
     <input type="text" id="name" placeholder="Your Name">
+
     <div class="stars">
-  <span onclick="setRating(1)">★</span>
-  <span onclick="setRating(2)">★</span>
-  <span onclick="setRating(3)">★</span>
-  <span onclick="setRating(4)">★</span>
-  <span onclick="setRating(5)">★</span>
-</div>
+      <span onclick="setRating(1)">★</span>
+      <span onclick="setRating(2)">★</span>
+      <span onclick="setRating(3)">★</span>
+      <span onclick="setRating(4)">★</span>
+      <span onclick="setRating(5)">★</span>
+    </div>
+
     <textarea id="review" placeholder="Your Review"></textarea>
+
     <button onclick="submitReview()">Submit Review</button>
-    <div id="reviews-container"></div>
   </div>
 
-  <!-- REVIEWS -->
   <div class="reviews">
     <h2>Customer Reviews</h2>
-    <div id="reviewsList"></div>
+    <div id="reviewsContainer"></div>
   </div>
 
-  <!-- FIREBASE -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -179,11 +127,20 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    async function submitReview() {
+    let selectedRating = 0;
+
+    window.setRating = function (rating) {
+      selectedRating = rating;
+      document.querySelectorAll(".stars span").forEach((star, index) => {
+        star.classList.toggle("active", index < rating);
+      });
+    };
+
+    window.submitReview = async function () {
       const name = document.getElementById("name").value;
       const review = document.getElementById("review").value;
 
-      if (!name || !review) {
+      if (!name || !review || selectedRating === 0) {
         alert("Please fill all fields");
         return;
       }
@@ -191,76 +148,47 @@
       await addDoc(collection(db, "reviews"), {
         name,
         review,
+        rating: selectedRating,
         time: new Date()
       });
 
       alert("Review submitted!");
+
+      document.getElementById("name").value = "";
+      document.getElementById("review").value = "";
+      selectedRating = 0;
+
+      document.querySelectorAll(".stars span").forEach(s => s.classList.remove("active"));
+
       loadReviews();
-    }
+    };
 
     async function loadReviews() {
       const querySnapshot = await getDocs(collection(db, "reviews"));
-      const list = document.getElementById("reviewsList");
+      const container = document.getElementById("reviewsContainer");
 
-      list.innerHTML = "";
+      container.innerHTML = "";
 
       querySnapshot.forEach((doc) => {
         const data = doc.data();
 
-        list.innerHTML += `
-          <div class="card">
-            <h3>${data.name}</h3>
-            <p>${data.review}</p>
-          </div>
+        const stars = "★".repeat(data.rating) + "☆".repeat(5 - data.rating);
+
+        const div = document.createElement("div");
+        div.classList.add("review-card");
+
+        div.innerHTML = `
+          <p style="color:#f4c430; font-size:26px; letter-spacing:4px;">${stars}</p>
+          <h3 style="color:#2e7d32;">${data.name}</h3>
+          <p style="font-style:italic;">"${data.review}"</p>
         `;
+
+        container.appendChild(div);
       });
     }
 
-    window.onload = loadReviews;
+    loadReviews();
   </script>
-<script>
-    let selectedRating = 0;
 
-function setRating(rating) {
-  selectedRating = rating;
-
-  const stars = document.querySelectorAll(".stars span");
-
-  stars.forEach((star, index) => {
-    if (index < rating) {
-      star.classList.add("active");
-    } else {
-      star.classList.remove("active");
-    }
-  });
-}
-function submitReview() {
-  const name = document.getElementById("name").value;
-  const review = document.getElementById("review").value;
-
-  if (!name || !review || selectedRating === 0) {
-    alert("Please fill all fields");
-    return;
-  }
-
-  const container = document.getElementById("reviews-container");
-
-  const div = document.createElement("div");
-  div.classList.add("review-card");
-
-  const stars = "★".repeat(selectedRating) + "☆".repeat(5 - selectedRating);
-  div.innerHTML = `
-  <p style="color:#f4c430; font-size:26px; letter-spacing:4px;">${stars}</p>
-  <h3 style="margin:5px 0; color:#2e7d32;">${name}</h3>
-  <p style="font-style:italic; color:#555;">"${review}"</p>
-`;
-
-  container.prepend(div);
-
-  // clear inputs
-  document.getElementById("name").value = "";
-  document.getElementById("review").value = "";
-}
-</script>
 </body>
 </html>
