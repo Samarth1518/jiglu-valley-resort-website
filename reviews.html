@@ -114,6 +114,7 @@
     <input type="text" id="name" placeholder="Your Name">
     <textarea id="review" placeholder="Your Review"></textarea>
     <button onclick="submitReview()">Submit Review</button>
+    <div id="reviews-container"></div>
   </div>
 
   <!-- REVIEWS -->
@@ -180,7 +181,33 @@
   </script>
 <script>
 function submitReview() {
-  alert("Now working");
+  const name = document.getElementById("name").value;
+  const review = document.getElementById("review").value;
+
+  if (!name || !review) {
+    alert("Please fill all fields");
+    return;
+  }
+
+  const container = document.getElementById("reviews-container");
+
+  const div = document.createElement("div");
+  div.style.background = "white";
+  div.style.padding = "15px";
+  div.style.margin = "10px";
+  div.style.borderRadius = "10px";
+  div.style.boxShadow = "0 4px 10px rgba(0,0,0,0.1)";
+
+  div.innerHTML = `
+    <h3 style="color:#2e7d32;">${name}</h3>
+    <p>${review}</p>
+  `;
+
+  container.prepend(div);
+
+  // clear inputs
+  document.getElementById("name").value = "";
+  document.getElementById("review").value = "";
 }
 </script>
 </body>
