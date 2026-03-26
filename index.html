@@ -178,6 +178,7 @@
       <li><a href="#stay"    class="nav-link hover:text-green-300 transition-colors">Stay</a></li>
       <li><a href="#activities" class="nav-link hover:text-green-300 transition-colors">Activities</a></li>
       <li><a href="#gallery" class="nav-link hover:text-green-300 transition-colors">Gallery</a></li>
+      <li><a href="reviews.html" class="nav-link hover:text-green-300 transition-colors">Reviews</a></li>
       <li><a href="#nearby"  class="nav-link hover:text-green-300 transition-colors">Nearby Places</a></li>
       <li><a href="#contact" class="nav-link hover:text-green-300 transition-colors">Contact</a></li>
     </ul>
@@ -434,6 +435,33 @@
   </div>
 </section>
 
+<!-- REVIEWS SECTION START -->
+<section id="reviews" style="padding:60px 20px; text-align:center; background:#f9f9f9;">
+  
+  <h2 style="font-size:32px; margin-bottom:30px;">
+    What Our Guests Say 🌿
+  </h2>
+
+  <div id="homeReviews" style="max-width:900px; margin:auto;"></div>
+
+  <a href="reviews.html">
+    <button style="
+      margin-top:25px;
+      padding:12px 25px;
+      background:#2e7d32;
+      color:white;
+      border:none;
+      border-radius:8px;
+      cursor:pointer;
+      font-size:16px;
+    ">
+      View All Reviews
+    </button>
+  </a>
+
+</section>
+<!-- REVIEWS SECTION END -->
+
 <!-- ═══════════════════ PARALLAX ═══════════════════ -->
 <section class="parallax-bg relative h-80 md:h-[420px] flex items-center justify-center">
   <div class="absolute inset-0 bg-forest-900/60"></div>
@@ -672,5 +700,62 @@
 </div>
 
 <script src="script.js"></script>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCOtlm8NiNYLaBKU1WhkCSZ-HWizk2dVKs",
+  authDomain: "jiglu-valley.firebaseapp.com",
+  projectId: "jiglu-valley",
+  storageBucket: "jiglu-valley.firebasestorage.app",
+  messagingSenderId: "619513636984",
+  appId: "1:619513636984:web:7231ae82bb9ab4fef3258d"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+async function loadHomeReviews() {
+  const snapshot = await getDocs(collection(db, "reviews"));
+  const container = document.getElementById("homeReviews");
+
+  if (!container) return;
+
+  let count = 0;
+
+  snapshot.forEach(doc => {
+    if (count >= 3) return;
+
+    const data = doc.data();
+
+    const stars = "★".repeat(data.rating) + "☆".repeat(5 - data.rating);
+
+    const div = document.createElement("div");
+
+    div.style = `
+      background:white;
+      padding:20px;
+      margin:15px 0;
+      border-radius:12px;
+      box-shadow:0 5px 15px rgba(0,0,0,0.1);
+      text-align:left;
+    `;
+
+    div.innerHTML = `
+      <p style="color:#f4c430; font-size:22px;">${stars}</p>
+      <h3 style="color:#2e7d32;">${data.name}</h3>
+      <p>"${data.review.substring(0,120)}..."</p>
+    `;
+
+    container.appendChild(div);
+
+    count++;
+  });
+}
+
+loadHomeReviews();
+</script>
 </body>
 </html>
