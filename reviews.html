@@ -250,7 +250,7 @@ function submitReview() {
 
   const stars = "★".repeat(selectedRating) + "☆".repeat(5 - selectedRating);
   div.innerHTML = `
-  <p style="color:gold; font-size:18px;">${stars}</p>
+  <p style="color:#f4c430; font-size:26px; letter-spacing:4px;">${stars}</p>
   <h3 style="margin:5px 0; color:#2e7d32;">${name}</h3>
   <p style="font-style:italic; color:#555;">"${review}"</p>
 `;
