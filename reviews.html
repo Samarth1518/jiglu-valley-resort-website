@@ -248,6 +248,29 @@ window.collection = collection;
 
     loadReviews();
   </script>
+<style>
+  .back-home-btn {
+    position: fixed;
+    top: 16px;
+    left: 16px;
+    z-index: 9999;
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 14px;
+    text-decoration: none;
+    backdrop-filter: blur(6px);
+    transition: 0.3s;
+  }
 
+  .back-home-btn:hover {
+    background: rgba(0, 0, 0, 0.7);
+  }
+</style>
+
+<a href="index.html" class="back-home-btn">
+  ← Home
+</a>
 </body>
 </html>
